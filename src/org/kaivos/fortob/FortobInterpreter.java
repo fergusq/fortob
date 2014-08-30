@@ -3,6 +3,7 @@ package org.kaivos.fortob;
 import java.io.File;
 import java.io.IOException;
 
+import org.kaivos.fortob.environment.FortobEnvironment;
 import org.kaivos.nept.parser.TokenList;
 import org.kaivos.nept.parser.TokenScanner;
 
@@ -13,7 +14,10 @@ import org.kaivos.nept.parser.TokenScanner;
  */
 public class FortobInterpreter {
 
-	static final TokenScanner scanner = new TokenScanner()
+	/**
+	 * The default scanner used to tokenize Fortob code
+	 */
+	public static final TokenScanner scanner = new TokenScanner()
 		.separateIdentifiersAndPunctuation(true)
 		.addCommentRule("#", "\n");
 	

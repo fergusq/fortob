@@ -1,6 +1,8 @@
-package org.kaivos.fortob;
+package org.kaivos.fortob.value;
 
 import java.math.BigDecimal;
+
+import org.kaivos.fortob.environment.FortobEnvironment;
 
 /**
  * Represents a floating point number

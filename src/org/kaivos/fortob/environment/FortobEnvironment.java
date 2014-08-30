@@ -1,8 +1,11 @@
-package org.kaivos.fortob;
+package org.kaivos.fortob.environment;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Stack;
+
+import org.kaivos.fortob.value.FortobValue;
 
 /**
  * Represents the environment
@@ -12,39 +15,26 @@ import java.util.Stack;
  */
 public class FortobEnvironment {
 
-	private FortobEnvironment superEnv;
-	
 	private Stack<FortobValue> stack = new Stack<>();
-	private Map<String, FortobValue> map = new HashMap<>();
+	protected Map<String, FortobValue> map = new HashMap<>();
 
 	/**
 	 * Initializes an empty environment
 	 */
-	public FortobEnvironment() {
-		superEnv = null;
-	}
-	
-	/**
-	 * Initializes a new subenvironment
-	 * 
-	 * @param parent The parent environment
-	 */
-	public FortobEnvironment(FortobEnvironment parent) {
-		this.superEnv = parent;
-	}
+	public FortobEnvironment() {}
 	
 	/**
 	 * @return The parent environment
 	 */
-	public FortobEnvironment parent() {
-		return superEnv;
+	public Optional<FortobEnvironment> parent() {
+		return Optional.empty();
 	}
 	
 	/**
 	 * @return A new subenvironment
 	 */
 	public FortobEnvironment sub() {
-		return new FortobEnvironment(this);
+		return new FortobSubenvironment(this);
 	}
 	
 	/**
@@ -103,10 +93,7 @@ public class FortobEnvironment {
 	 * @return self
 	 */
 	public FortobEnvironment put(String name, FortobValue val) {
-		if (superEnv != null && superEnv.contains(name))
-			superEnv.put(name, val);
-		else
-			map.put(name, val);
+		map.put(name, val);
 		
 		return this;
 	}
@@ -132,10 +119,7 @@ public class FortobEnvironment {
 	 */
 	public FortobValue get(String name) {
 		if (!map.containsKey(name)) {
-			if (superEnv == null)
-				throw new IndexOutOfBoundsException(name);
-			else
-				return superEnv.get(name);
+			throw new IndexOutOfBoundsException(name);
 		}
 		return map.get(name);
 	}
@@ -147,7 +131,7 @@ public class FortobEnvironment {
 	 * @return true or false
 	 */
 	public boolean contains(String name) {
-		return map.containsKey(name) || (superEnv != null && superEnv.contains(name));
+		return map.containsKey(name);
 	}
 	
 	@Override

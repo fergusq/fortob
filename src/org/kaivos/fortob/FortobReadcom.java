@@ -8,6 +8,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.kaivos.fortob.environment.FortobEnvironment;
+import org.kaivos.fortob.value.FortobBoolean;
+import org.kaivos.fortob.value.FortobNumber;
+import org.kaivos.fortob.value.FortobString;
+import org.kaivos.fortob.value.FortobValue;
 import org.kaivos.nept.parser.Token;
 import org.kaivos.nept.parser.TokenList;
 
@@ -150,7 +155,14 @@ public class FortobReadcom implements FortobCommand {
 		if (DEBUG) System.err.println(i() + env);
 	}
 	
-	FortobValue eval(TokenList tl, FortobEnvironment env) {
+	/**
+	 * Same as proceed, but returns the top value of the stack
+	 * 
+	 * @param tl The token list
+	 * @param env The environment
+	 * @return the top value of the stack
+	 */
+	public FortobValue eval(TokenList tl, FortobEnvironment env) {
 		proceed(tl, env);
 		return env.pop();
 	}

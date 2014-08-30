@@ -1,4 +1,4 @@
-package org.kaivos.fortob;
+package org.kaivos.fortob.value;
 
 import java.math.BigDecimal;
 
