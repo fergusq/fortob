@@ -3,6 +3,7 @@ package org.kaivos.fortob;
 import java.io.File;
 import java.io.IOException;
 
+import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.environment.FortobEnvironment;
 import org.kaivos.nept.parser.TokenList;
 import org.kaivos.nept.parser.TokenScanner;
@@ -12,6 +13,7 @@ import org.kaivos.nept.parser.TokenScanner;
  * 
  * @author Iikka Hauhio
  */
+@NonNullByDefault
 public class FortobInterpreter {
 
 	/**

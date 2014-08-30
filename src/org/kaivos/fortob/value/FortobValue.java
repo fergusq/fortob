@@ -3,6 +3,7 @@ package org.kaivos.fortob.value;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.environment.FortobEnvironment;
 
 /**
@@ -11,6 +12,7 @@ import org.kaivos.fortob.environment.FortobEnvironment;
  * @author Iikka Hauhio
  *
  */
+@NonNullByDefault
 public interface FortobValue {
 
 	/**

@@ -1,5 +1,6 @@
 package org.kaivos.fortob;
 
+import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.environment.FortobEnvironment;
 import org.kaivos.nept.parser.TokenList;
 
@@ -9,6 +10,7 @@ import org.kaivos.nept.parser.TokenList;
  * @author Iikka Hauhio
  *
  */
+@NonNullByDefault
 public interface FortobCommand {
 	
 	/**

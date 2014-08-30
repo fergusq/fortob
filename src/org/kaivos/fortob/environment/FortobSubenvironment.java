@@ -3,6 +3,7 @@ package org.kaivos.fortob.environment;
 import java.util.Optional;
 
 import org.kaivos.fortob.annotation.NonNull;
+import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.value.FortobValue;
 
 /**
@@ -11,6 +12,7 @@ import org.kaivos.fortob.value.FortobValue;
  * @author Iikka Hauhio
  *
  */
+@NonNullByDefault
 class FortobSubenvironment extends FortobEnvironment {
 	
 	private @NonNull FortobEnvironment parent;
@@ -68,6 +70,6 @@ class FortobSubenvironment extends FortobEnvironment {
 	 */
 	@Override
 	public boolean contains(String name) {
-		return map.containsKey(name) || (parent.contains(name));
+		return map.containsKey(name) || parent.contains(name);
 	}
 }

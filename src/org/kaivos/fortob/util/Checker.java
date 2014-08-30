@@ -1,6 +1,7 @@
 package org.kaivos.fortob.util;
 
 import org.kaivos.fortob.annotation.NonNull;
+import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.annotation.Nullable;
 
 /**
@@ -9,6 +10,7 @@ import org.kaivos.fortob.annotation.Nullable;
  * @author Iikka Hauhio
  *
  */
+@NonNullByDefault
 public class Checker {
 
 	private Checker() {}

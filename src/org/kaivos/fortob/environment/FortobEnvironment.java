@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Stack;
 
+import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.value.FortobValue;
 
 /**
@@ -13,6 +14,7 @@ import org.kaivos.fortob.value.FortobValue;
  * @author Iikka Hauhio
  *
  */
+@NonNullByDefault
 public class FortobEnvironment {
 
 	private Stack<FortobValue> stack = new Stack<>();

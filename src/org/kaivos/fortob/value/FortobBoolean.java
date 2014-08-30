@@ -2,6 +2,7 @@ package org.kaivos.fortob.value;
 
 import org.kaivos.fortob.FortobInterpreter;
 import org.kaivos.fortob.FortobReadcom;
+import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.environment.FortobEnvironment;
 
 /**
@@ -10,6 +11,7 @@ import org.kaivos.fortob.environment.FortobEnvironment;
  * @author Iikka Hauhio
  *
  */
+@NonNullByDefault
 public class FortobBoolean implements FortobValue, BooleanValue {
 	
 	private boolean bool;

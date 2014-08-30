@@ -3,6 +3,7 @@ package org.kaivos.fortob.value;
 import java.math.BigDecimal;
 
 import org.kaivos.fortob.annotation.NonNull;
+import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.environment.FortobEnvironment;
 
 import static org.kaivos.fortob.util.Checker.check;
@@ -13,6 +14,7 @@ import static org.kaivos.fortob.util.Checker.check;
  * @author Iikka Hauhio
  *
  */
+@NonNullByDefault
 public class FortobNumber implements FortobValue, NumeralValue {
 
 	private @NonNull BigDecimal num;

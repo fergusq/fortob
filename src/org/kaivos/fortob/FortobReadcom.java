@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.environment.FortobEnvironment;
 import org.kaivos.fortob.value.FortobBoolean;
 import org.kaivos.fortob.value.FortobNumber;
@@ -22,6 +23,7 @@ import static org.kaivos.fortob.util.Checker.check;
  * 
  * @author Iikka Hauhio
  */
+@NonNullByDefault
 public class FortobReadcom implements FortobCommand {
 
 	private static int ilevel = 0;
