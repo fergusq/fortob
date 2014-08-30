@@ -19,6 +19,7 @@ public class FortobInterpreter {
 	 */
 	public static final TokenScanner scanner = new TokenScanner()
 		.separateIdentifiersAndPunctuation(true)
+		.addStringRule('"', '"', '\\')
 		.addCommentRule("#", "\n");
 	
 	/**

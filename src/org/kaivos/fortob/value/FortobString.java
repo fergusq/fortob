@@ -41,6 +41,8 @@ public class FortobString implements FortobValue {
 			switch (name) {
 			case "+":
 				return new FortobString(str + args[0].toString());
+			case "=":
+				return new FortobBoolean(str.equals(args[0].toString()));
 				
 			case "while": {
 				boolean flag = false;
@@ -89,10 +91,9 @@ public class FortobString implements FortobValue {
 		}
 		
 		switch (name) {
-		
 		case "apply":{
 			FortobEnvironment senv = env.sub();
-			for (FortobValue arg : args) senv.push(arg);
+			for (int i = args.length-1; i >= 0; i--) senv.push(args[i]);
 			return FortobReadcom.READCOM.eval(FortobInterpreter.scanner.tokenize(str, "<function `" + str + "'>"), senv);
 		}
 		default:

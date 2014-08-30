@@ -1,8 +1,41 @@
+# strings
 $name = "Nimi"\;
 $name.println;
 $name+_+"Sukunimi"\\.println;
+
+# loop
 $i = '0\;
 [$i < '1 0].while: [
 	$i = $i + '1\\;
 	$i p;
 ]\;
+
+# functions
+$printTwo=[
+	# args
+	$a=\;
+	$b=\;
+	($a+_+$b).println;
+	'
+]\;
+
+$printTwo.apply: "koe", "koe2"\;
+
+# parsing functions
+# $? is the token list of the **current scope**
+
+$printName=[
+	$tl=\;
+	$firstName = $tl.nextString\;
+	$lastName = $tl.nextString\;
+	$originalName = $tl.seekString="os"\.if: [
+		$tl.accept:"os"\;
+		$tl.accept:"."\;
+		$tl.nextString
+	], [$lastName]\\;
+	($firstName+_+$lastName+_+"os"+_+$originalName).println;
+	'
+]\;
+
+$? $printName.apply:\ Pekka Meikäläinen;
+$? $printName.apply:\ Maija Meikäläinen os. Suomalainen;

@@ -59,8 +59,7 @@ public class FortobReadcom implements FortobCommand {
 		
 		commandMap.put("\"", (tl, env) -> {
 			String str = tl.nextString();
-			
-			tl.accept("\"");
+			str = str.substring(1, str.length()-1);
 			
 			env.push(new FortobString(str));
 		});
@@ -85,8 +84,10 @@ public class FortobReadcom implements FortobCommand {
 			}
 			
 			if (DEBUG) System.err.println(i() + obj + "." + method + args);
-			
+			ilevel++;
 			env.push(obj.invokeMethod(env, method, args.toArray(new FortobValue[0])));
+			ilevel--;
+			if (DEBUG) System.err.println(i() + "= " + env.peek());
 		});
 		
 		for (String operator : new String[] {"+", "-", "*", "/", "=", "<", ">"})
@@ -117,6 +118,10 @@ public class FortobReadcom implements FortobCommand {
 					return new FortobString(tl.nextString());
 				case "nextNumber":
 					return new FortobNumber(Double.parseDouble(tl.nextString()));
+				case "seekString":
+					return new FortobString(tl.seekString());
+				case "seekNumber":
+					return new FortobNumber(Double.parseDouble(tl.seekString()));
 				}
 			}
 			
@@ -132,7 +137,12 @@ public class FortobReadcom implements FortobCommand {
 					.map(a -> a.getClass().getName()).collect(Collectors.joining(", ")) + ")'");
 		});
 		
-		while (tl.hasNext() && commandMap.containsKey(tl.seekString())) {
+		if (tl.isNext("\\")) {
+			tl.accept("\\");
+			return;
+		}
+		
+		while (tl.hasNext() ? (commandMap.containsKey(tl.seekString())) || tl.seekString().startsWith("\"") : false) {
 			proceedOnce(tl, env);
 			if (tl.isNext("\\")) {
 				tl.accept("\\");
@@ -142,16 +152,27 @@ public class FortobReadcom implements FortobCommand {
 	}
 	
 	private void proceedOnce(TokenList tl, FortobEnvironment env) {
-		Token next = tl.next();
+		String command;
+		int line;
+		if (!tl.seekString().startsWith("\"")) {
+			Token next = tl.next();
+			
+			command = next.getToken();
+			line = next.getLine();
+		}
+		else {
+			command = "\"";
+			line = tl.seek().getLine();
+		}
 		
-		if (DEBUG) System.err.println(i() + next.getToken() + "@" + next.getLine());
+		if (DEBUG) System.err.println(i() + command + "@" + line);
 		
 		ilevel++;
-		
-		commandMap.get(next.getToken()).proceed(tl, env);
 			
+		commandMap.get(command).proceed(tl, env);
+				
 		ilevel--;
-		
+			
 		if (DEBUG) System.err.println(i() + env);
 	}
 	
@@ -164,6 +185,7 @@ public class FortobReadcom implements FortobCommand {
 	 */
 	public FortobValue eval(TokenList tl, FortobEnvironment env) {
 		proceed(tl, env);
+		if (DEBUG) System.err.println(i() + "= " + env.peek());
 		return env.pop();
 	}
 
