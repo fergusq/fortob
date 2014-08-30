@@ -1,0 +1,106 @@
+package org.kaivos.fortob;
+
+/**
+ * Represents a string
+ * 
+ * @author Iikka Hauhio
+ *
+ */
+public class FortobString implements FortobValue {
+
+	private String str;
+	
+	/**
+	 * The default constructor
+	 * @param val
+	 */
+	public FortobString(String val) {
+		this.str = val;
+	}
+	
+	@Override
+	public FortobValue invokeMethod(FortobEnvironment env, String name, FortobValue... args) {
+		if (args.length == 0) {
+			switch (name) {
+			case "print":
+				System.out.print(str);
+				return this;
+			case "println":
+				System.out.println(str);
+				return this;
+
+			default:
+				break;
+			}
+		}
+		if (args.length == 1) {
+			switch (name) {
+			case "+":
+				return new FortobString(str + args[0].toString());
+				
+			case "while": {
+				boolean flag = false;
+				while (true) {
+					FortobValue val = FortobReadcom.READCOM.eval(FortobInterpreter.scanner.tokenize(str, "<snippet>"), env.sub());
+					if (val.getType() != FortobType.BOOLEAN || !(val instanceof BooleanValue)) {
+						throw new RuntimeException("Unknown method `" + name + "'");
+					}
+					boolean cond = ((BooleanValue) val).value();
+					if (cond) {
+						flag = true;
+						FortobReadcom.READCOM.proceed(FortobInterpreter.scanner.tokenize(args[0].toString(), "<snippet>"), env.sub());
+					} else {
+						break;
+					}
+				}
+				return new FortobBoolean(flag);
+			}
+				
+			default:
+				break;
+			}
+		}
+		
+		if (args.length == 1 || args.length == 2) {
+			switch (name) {
+			case "if": {
+				FortobValue val = FortobReadcom.READCOM.eval(FortobInterpreter.scanner.tokenize(str, "<snippet>"), env.sub());
+				if (val.getType() != FortobType.BOOLEAN || !(val instanceof BooleanValue)) {
+					throw new RuntimeException("Unknown method `" + name + "'");
+				}
+				boolean cond = ((BooleanValue) val).value();
+				if (cond)
+					return FortobReadcom.READCOM.eval(FortobInterpreter.scanner.tokenize(args[0].toString(), "<snippet>"), env.sub());
+				else {
+					if (args.length == 1)
+						return new FortobBoolean(false);
+					else
+						return FortobReadcom.READCOM.eval(FortobInterpreter.scanner.tokenize(args[1].toString(), "<snippet>"), env.sub());
+				}
+			}
+	
+			default:
+				break;
+			}
+		}
+		
+		switch (name) {
+		
+		case "apply":{
+			FortobEnvironment senv = env.sub();
+			for (FortobValue arg : args) senv.push(arg);
+			return FortobReadcom.READCOM.eval(FortobInterpreter.scanner.tokenize(str, "<function `" + str + "'>"), senv);
+		}
+		default:
+			break;
+		}
+		
+		throw FortobValue.unknownMethod(this, name, args);
+	}
+	
+	@Override
+	public String toString() {
+		return str;
+	}
+
+}
