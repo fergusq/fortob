@@ -1,5 +1,7 @@
 package org.kaivos.fortob.environment;
 
+import java.util.Optional;
+
 import org.kaivos.fortob.value.FortobValue;
 
 /**
@@ -19,6 +21,11 @@ class FortobSubenvironment extends FortobEnvironment {
 	 */
 	public FortobSubenvironment(FortobEnvironment parent) {
 		this.parent = parent;
+	}
+	
+	@Override
+	public Optional<FortobEnvironment> parent() {
+		return Optional.of(parent);
 	}
 	
 	/**
