@@ -33,7 +33,7 @@ $printName=[
 		$tl.accept:"."\;
 		$tl.nextString
 	], [$lastName]\\;
-	($firstName+_+$lastName+_+"os"+_+$originalName).println;
+	($firstName+_+$lastName+_+"os."+_+$originalName).println;
 	'
 ]\;
 

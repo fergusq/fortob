@@ -62,9 +62,10 @@ public class FortobReadcom implements FortobCommand {
 		
 		commandMap.put("\"", (tl, env) -> {
 			String str = tl.nextString();
-			str = str.substring(1, str.length()-1);
 			
-			env.push(new FortobString(check(str)));
+			env.push(new FortobString(check(str.trim())));
+			
+			tl.accept("\"");
 		});
 		
 		commandMap.put("_", (tl, env) -> env.push(new FortobString(" ")));
@@ -199,7 +200,7 @@ public class FortobReadcom implements FortobCommand {
 			return;
 		}
 		
-		while (tl.hasNext() ? (commandMap.containsKey(tl.seekString())) || tl.seekString().startsWith("\"") : false) {
+		while (tl.hasNext() ? commandMap.containsKey(tl.seekString()) : false) {
 			proceedOnce(tl, env);
 			if (tl.isNext("\\")) {
 				tl.accept("\\");
@@ -209,18 +210,10 @@ public class FortobReadcom implements FortobCommand {
 	}
 	
 	private void proceedOnce(TokenList tl, FortobEnvironment env) {
-		String command;
-		int line;
-		if (!tl.seekString().startsWith("\"")) {
-			Token next = tl.next();
-			
-			command = next.getToken();
-			line = next.getLine();
-		}
-		else {
-			command = "\"";
-			line = tl.seek().getLine();
-		}
+		Token next = tl.next();
+		String command = next.getToken();
+		int line = next.getLine();
+		
 		
 		if (DEBUG) System.err.println(i() + command + "@" + line);
 		
