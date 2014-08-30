@@ -96,6 +96,12 @@ public class FortobString implements FortobValue {
 			for (int i = args.length-1; i >= 0; i--) senv.push(args[i]);
 			return FortobReadcom.READCOM.eval(FortobInterpreter.scanner.tokenize(str, "<function `" + str + "'>"), senv);
 		}
+		case "proceed":{
+			FortobEnvironment senv = env.sub();
+			for (int i = args.length-1; i >= 0; i--) senv.push(args[i]);
+			FortobReadcom.READCOM.proceed(FortobInterpreter.scanner.tokenize(str, "<function `" + str + "'>"), senv);
+			return new FortobBoolean(true);
+		}
 		default:
 			break;
 		}

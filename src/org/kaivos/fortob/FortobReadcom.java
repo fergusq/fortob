@@ -1,7 +1,6 @@
 package org.kaivos.fortob;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,36 +105,90 @@ public class FortobReadcom implements FortobCommand {
 			env.push(env.get(name));
 		});
 		
+		commandMap.put("@", (tl, env) -> {
+			String name = tl.nextString();
+			FortobValue val = eval(tl, env);
+			commandMap.put(name, (stl, senv) -> {
+				FortobEnvironment cenv = senv.sub();
+				cenv.put("!", tokenListObj(stl, senv));
+				cenv.put("\\", envObj(senv));
+				val.invokeMethod(cenv, "proceed");
+			});
+			env.push(val);
+		});
+		
 		commandMap.put("p", (tl, env) -> System.out.println(env.peek()));
+	}
+	
+	private FortobValue tokenListObj(TokenList tl, FortobEnvironment env) {
+		FortobValue val = new FortobValue() {
+			@Override
+			public FortobValue invokeMethod(FortobEnvironment env, String name,
+					FortobValue... args) {
+				if (args.length == 0) {
+					switch (name) {
+					case "nextString":
+						return new FortobString(tl.nextString());
+					case "nextNumber":
+						return new FortobNumber(Double.parseDouble(tl.nextString()));
+					case "seekString":
+						return new FortobString(tl.seekString());
+					case "seekNumber":
+						return new FortobNumber(Double.parseDouble(tl.seekString()));
+					case "readcom":
+						return eval(tl, env);
+					}
+				}
+				
+				if (args.length == 1) {
+					switch (name) {
+					case "accept":
+						tl.accept(args[0].toString());
+						return new FortobBoolean(true);
+					}
+				}
+				
+				throw FortobValue.unknownMethod(this, name, args);
+			}
+		};
+		return val;
+	}
+	
+	private FortobValue envObj(FortobEnvironment env) {
+		FortobValue val = new FortobValue() {
+			@Override
+			public FortobValue invokeMethod(FortobEnvironment e, String name,
+					FortobValue... args) {
+				if (args.length == 0) {
+					switch (name) {
+					case "pop":
+						return env.pop();
+					case "drop":
+						env.drop();
+						return this;
+					case "dup":
+						env.dup();
+						return this;
+					}
+				}
+				
+				if (args.length == 1) {
+					switch (name) {
+					case "push":
+						env.push(args[0]);
+						return this;
+					}
+				}
+				
+				throw FortobValue.unknownMethod(this, name, args);
+			}
+		};
+		return val;
 	}
 	
 	@Override
 	public void proceed(TokenList tl, FortobEnvironment env) {
-		env.putLocal("?", (lenv, name, args) -> {
-			if (args.length == 0) {
-				switch (name) {
-				case "nextString":
-					return new FortobString(tl.nextString());
-				case "nextNumber":
-					return new FortobNumber(Double.parseDouble(tl.nextString()));
-				case "seekString":
-					return new FortobString(tl.seekString());
-				case "seekNumber":
-					return new FortobNumber(Double.parseDouble(tl.seekString()));
-				}
-			}
-			
-			if (args.length == 1) {
-				switch (name) {
-				case "accept":
-					tl.accept(args[0].toString());
-					return new FortobBoolean(true);
-				}
-			}
-			
-			throw new RuntimeException("Unknown method `" + name + "(" + Arrays.asList(args).stream()
-					.map(a -> a.getClass().getName()).collect(Collectors.joining(", ")) + ")'");
-		});
+		env.putLocal("?", tokenListObj(tl, env));
 		
 		if (tl.isNext("\\")) {
 			tl.accept("\\");

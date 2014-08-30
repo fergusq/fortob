@@ -39,3 +39,19 @@ $printName=[
 
 $? $printName.apply:\ Pekka Meikäläinen;
 $? $printName.apply:\ Maija Meikäläinen os. Suomalainen;
+
+# another way to do the same thing
+
+@printName[
+	$firstName = $!.nextString\;
+	$lastName = $!.nextString\;
+	$originalName = $!.seekString="os"\.if: [
+                $!.accept:"os"\;
+                $!.accept:"."\;
+                $!.nextString
+        ], [$lastName]\\;
+	($firstName+_+$lastName+_+"os"+_+$originalName).println;
+	$\.push:'\;
+]\;
+
+printName Anna Virtanen;
