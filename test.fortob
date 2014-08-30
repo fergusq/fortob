@@ -55,3 +55,6 @@ $? $printName.apply:\ Maija Meikäläinen os. Suomalainen;
 ]\;
 
 printName Anna Virtanen;
+
+@print[$!.readcom.println;$\.push:'\;]\;
+print "Hello world!"\;

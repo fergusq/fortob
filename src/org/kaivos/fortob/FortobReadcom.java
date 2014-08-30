@@ -15,6 +15,8 @@ import org.kaivos.fortob.value.FortobValue;
 import org.kaivos.nept.parser.Token;
 import org.kaivos.nept.parser.TokenList;
 
+import static org.kaivos.fortob.util.Checker.check;
+
 /**
  * FortobReadcom is a class that reads and interprets commands.
  * 
@@ -53,14 +55,14 @@ public class FortobReadcom implements FortobCommand {
 			
 			tl.accept("]");
 			
-			env.push(new FortobString(str.trim()));
+			env.push(new FortobString(check(str.trim())));
 		});
 		
 		commandMap.put("\"", (tl, env) -> {
 			String str = tl.nextString();
 			str = str.substring(1, str.length()-1);
 			
-			env.push(new FortobString(str));
+			env.push(new FortobString(check(str)));
 		});
 		
 		commandMap.put("_", (tl, env) -> env.push(new FortobString(" ")));
@@ -128,11 +130,11 @@ public class FortobReadcom implements FortobCommand {
 				if (args.length == 0) {
 					switch (name) {
 					case "nextString":
-						return new FortobString(tl.nextString());
+						return new FortobString(check(tl.nextString()));
 					case "nextNumber":
 						return new FortobNumber(Double.parseDouble(tl.nextString()));
 					case "seekString":
-						return new FortobString(tl.seekString());
+						return new FortobString(check(tl.seekString()));
 					case "seekNumber":
 						return new FortobNumber(Double.parseDouble(tl.seekString()));
 					case "readcom":

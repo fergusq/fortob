@@ -2,6 +2,7 @@ package org.kaivos.fortob.environment;
 
 import java.util.Optional;
 
+import org.kaivos.fortob.annotation.NonNull;
 import org.kaivos.fortob.value.FortobValue;
 
 /**
@@ -12,14 +13,14 @@ import org.kaivos.fortob.value.FortobValue;
  */
 class FortobSubenvironment extends FortobEnvironment {
 	
-	private FortobEnvironment parent;
+	private @NonNull FortobEnvironment parent;
 	
 	/**
 	 * Initializes a new subenvironment
 	 * 
 	 * @param parent The parent environment
 	 */
-	public FortobSubenvironment(FortobEnvironment parent) {
+	public FortobSubenvironment(@NonNull FortobEnvironment parent) {
 		this.parent = parent;
 	}
 	
@@ -37,7 +38,7 @@ class FortobSubenvironment extends FortobEnvironment {
 	 */
 	@Override
 	public FortobEnvironment put(String name, FortobValue val) {
-		if (parent != null && parent.contains(name))
+		if (parent.contains(name))
 			parent.put(name, val);
 		else
 			map.put(name, val);
@@ -51,12 +52,10 @@ class FortobSubenvironment extends FortobEnvironment {
 	 * @param name The name
 	 * @return The value
 	 */
+	@Override
 	public FortobValue get(String name) {
 		if (!map.containsKey(name)) {
-			if (parent == null)
-				throw new IndexOutOfBoundsException(name);
-			else
-				return parent.get(name);
+			return parent.get(name);
 		}
 		return map.get(name);
 	}
@@ -67,7 +66,8 @@ class FortobSubenvironment extends FortobEnvironment {
 	 * @param name The name of the value
 	 * @return true or false
 	 */
+	@Override
 	public boolean contains(String name) {
-		return map.containsKey(name) || (parent != null && parent.contains(name));
+		return map.containsKey(name) || (parent.contains(name));
 	}
 }

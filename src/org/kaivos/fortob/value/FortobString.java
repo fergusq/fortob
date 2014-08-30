@@ -2,6 +2,7 @@ package org.kaivos.fortob.value;
 
 import org.kaivos.fortob.FortobInterpreter;
 import org.kaivos.fortob.FortobReadcom;
+import org.kaivos.fortob.annotation.NonNull;
 import org.kaivos.fortob.environment.FortobEnvironment;
 
 /**
@@ -12,13 +13,13 @@ import org.kaivos.fortob.environment.FortobEnvironment;
  */
 public class FortobString implements FortobValue {
 
-	private String str;
+	private @NonNull String str;
 	
 	/**
 	 * The default constructor
 	 * @param val
 	 */
-	public FortobString(String val) {
+	public FortobString(@NonNull String val) {
 		this.str = val;
 	}
 	
@@ -107,6 +108,11 @@ public class FortobString implements FortobValue {
 		}
 		
 		throw FortobValue.unknownMethod(this, name, args);
+	}
+	
+	@Override
+	public FortobType getType() {
+		return FortobType.STRING;
 	}
 	
 	@Override

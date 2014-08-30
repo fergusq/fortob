@@ -2,7 +2,10 @@ package org.kaivos.fortob.value;
 
 import java.math.BigDecimal;
 
+import org.kaivos.fortob.annotation.NonNull;
 import org.kaivos.fortob.environment.FortobEnvironment;
+
+import static org.kaivos.fortob.util.Checker.check;
 
 /**
  * Represents a floating point number
@@ -12,7 +15,7 @@ import org.kaivos.fortob.environment.FortobEnvironment;
  */
 public class FortobNumber implements FortobValue, NumeralValue {
 
-	private BigDecimal num;
+	private @NonNull BigDecimal num;
 	
 	/**
 	 * The default constructor
@@ -23,7 +26,7 @@ public class FortobNumber implements FortobValue, NumeralValue {
 		this.num = new BigDecimal(val);
 	}
 	
-	private FortobNumber(BigDecimal val) {
+	private FortobNumber(@NonNull BigDecimal val) {
 		this.num = val;
 	}
 	
@@ -33,7 +36,7 @@ public class FortobNumber implements FortobValue, NumeralValue {
 		if (args.length == 0) {
 			switch (name) {
 			case "!":
-				return new FortobNumber(num.negate());
+				return new FortobNumber(check(num.negate()));
 
 			default:
 				break;
@@ -47,13 +50,13 @@ public class FortobNumber implements FortobValue, NumeralValue {
 		
 			switch (name) {
 			case "+":
-				return new FortobNumber(a.add(b));
+				return new FortobNumber(check(a.add(b)));
 			case "-":
-				return new FortobNumber(a.subtract(b));
+				return new FortobNumber(check(a.subtract(b)));
 			case "*":
-				return new FortobNumber(a.multiply(b));
+				return new FortobNumber(check(a.multiply(b)));
 			case "/":
-				return new FortobNumber(a.divide(b));
+				return new FortobNumber(check(a.divide(b)));
 			case "=":
 				return new FortobBoolean(a.compareTo(b) == 0);
 			case "<":
