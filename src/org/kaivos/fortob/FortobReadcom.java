@@ -182,6 +182,16 @@ public class FortobReadcom implements FortobCommand {
 					case "push":
 						env.push(args[0]);
 						return this;
+					case "get":
+						return env.get(args[0].toString());
+					}
+				}
+				
+				if (args.length == 2) {
+					switch (name) {
+					case "put":
+						env.put(args[0].toString(), args[1]);
+						return this;
 					}
 				}
 				
