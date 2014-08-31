@@ -1,0 +1,16 @@
+# It is possible, that somebody hates dollars
+# That's why this program makes possible to use pounds instead of dollars
+
+@£[
+	$name=$!.nextString\;
+	$!.seekString="="\.if: [
+		$!.accept:"="\;
+		$\.put:$name,$val=$!.readcom\\;
+		$\.push:$val\;'
+	], [
+		$\.push:$\.get:$name\\;'
+	]\;
+]\;
+
+£var='4\;
+""+£var\.println;

@@ -6,6 +6,8 @@ import org.kaivos.fortob.annotation.NonNull;
 import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.environment.FortobEnvironment;
 
+import static org.kaivos.fortob.util.Checker.check;
+
 /**
  * Represents a string
  * 
@@ -50,14 +52,14 @@ public class FortobString implements FortobValue {
 			case "while": {
 				boolean flag = false;
 				while (true) {
-					FortobValue val = FortobReadcom.READCOM.eval(FortobInterpreter.scanner.tokenize(str, "<snippet>"), env.sub());
+					FortobValue val = FortobReadcom.READCOM.eval(check(FortobInterpreter.scanner.tokenize(str, "<snippet>")), env.sub());
 					if (val.getType() != FortobType.BOOLEAN || !(val instanceof BooleanValue)) {
 						throw new RuntimeException("Unknown method `" + name + "'");
 					}
 					boolean cond = ((BooleanValue) val).value();
 					if (cond) {
 						flag = true;
-						FortobReadcom.READCOM.proceed(FortobInterpreter.scanner.tokenize(args[0].toString(), "<snippet>"), env.sub());
+						FortobReadcom.READCOM.proceed(check(FortobInterpreter.scanner.tokenize(args[0].toString(), "<snippet>")), env.sub());
 					} else {
 						break;
 					}
@@ -73,18 +75,18 @@ public class FortobString implements FortobValue {
 		if (args.length == 1 || args.length == 2) {
 			switch (name) {
 			case "if": {
-				FortobValue val = FortobReadcom.READCOM.eval(FortobInterpreter.scanner.tokenize(str, "<snippet>"), env.sub());
+				FortobValue val = FortobReadcom.READCOM.eval(check(FortobInterpreter.scanner.tokenize(str, "<snippet>")), env.sub());
 				if (val.getType() != FortobType.BOOLEAN || !(val instanceof BooleanValue)) {
 					throw new RuntimeException("Unknown method `" + name + "'");
 				}
 				boolean cond = ((BooleanValue) val).value();
 				if (cond)
-					return FortobReadcom.READCOM.eval(FortobInterpreter.scanner.tokenize(args[0].toString(), "<snippet>"), env.sub());
+					return FortobReadcom.READCOM.eval(check(FortobInterpreter.scanner.tokenize(args[0].toString(), "<snippet>")), env.sub());
 				else {
 					if (args.length == 1)
 						return new FortobBoolean(false);
 					else
-						return FortobReadcom.READCOM.eval(FortobInterpreter.scanner.tokenize(args[1].toString(), "<snippet>"), env.sub());
+						return FortobReadcom.READCOM.eval(check(FortobInterpreter.scanner.tokenize(args[1].toString(), "<snippet>")), env.sub());
 				}
 			}
 	
@@ -97,12 +99,12 @@ public class FortobString implements FortobValue {
 		case "apply":{
 			FortobEnvironment senv = env.sub();
 			for (int i = args.length-1; i >= 0; i--) senv.push(args[i]);
-			return FortobReadcom.READCOM.eval(FortobInterpreter.scanner.tokenize(str, "<function `" + str + "'>"), senv);
+			return FortobReadcom.READCOM.eval(check(FortobInterpreter.scanner.tokenize(str, "<function `" + str + "'>")), senv);
 		}
 		case "proceed":{
 			FortobEnvironment senv = env.sub();
 			for (int i = args.length-1; i >= 0; i--) senv.push(args[i]);
-			FortobReadcom.READCOM.proceed(FortobInterpreter.scanner.tokenize(str, "<function `" + str + "'>"), senv);
+			FortobReadcom.READCOM.proceed(check(FortobInterpreter.scanner.tokenize(str, "<function `" + str + "'>")), senv);
 			return new FortobBoolean(true);
 		}
 		default:

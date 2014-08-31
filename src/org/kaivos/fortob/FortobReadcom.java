@@ -31,7 +31,7 @@ public class FortobReadcom implements FortobCommand {
 	private static String i() {
 		return IntStream.range(0, ilevel).mapToObj(i -> "\t").collect(Collectors.joining());
 	}
-	private static boolean DEBUG = false;
+	static boolean DEBUG = false;
 	
 	/**
 	 * FortobReadcom. The original and the best.
@@ -53,7 +53,10 @@ public class FortobReadcom implements FortobCommand {
 				if (tl.isNext("]")) i--;
 				if (i < 0) break;
 				
-				str += " " + tl.nextString();
+				if (tl.isNext("\"")) {
+					str += tl.nextString() + tl.nextString() + tl.nextString();
+				}
+				else str += " " + tl.nextString();
 			}
 			
 			tl.accept("]");
@@ -156,6 +159,19 @@ public class FortobReadcom implements FortobCommand {
 				
 				throw FortobValue.unknownMethod(this, name, args);
 			}
+			
+			@Override
+			public String getTypename() {
+				return "FortobInputQueue";
+			}
+			
+			/**
+			 * @return typename@hash
+			 */
+			@Override
+			public String toString() {
+				return this.getTypename() + "@" + this.hashCode();
+			}
 		};
 		return val;
 	}
@@ -197,6 +213,19 @@ public class FortobReadcom implements FortobCommand {
 				}
 				
 				throw FortobValue.unknownMethod(this, name, args);
+			}
+			
+			@Override
+			public String getTypename() {
+				return "FortobEnvironment";
+			}
+			
+			/**
+			 * @return typename@hash
+			 */
+			@Override
+			public String toString() {
+				return this.getTypename() + "@" + this.hashCode();
 			}
 		};
 		return val;

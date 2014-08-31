@@ -6,6 +6,8 @@ import org.kaivos.fortob.annotation.NonNull;
 import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.environment.FortobEnvironment;
 
+import static org.kaivos.fortob.util.Checker.check;
+
 /**
  * Represents a boolean
  * 
@@ -43,7 +45,7 @@ public class FortobBoolean implements FortobValue, BooleanValue {
 			switch (name) {
 			case "if":
 				if (bool)
-					return FortobReadcom.READCOM.eval(FortobInterpreter.scanner.tokenize(args[0].toString(), "<snippet>"), env.sub());
+					return FortobReadcom.READCOM.eval(check(FortobInterpreter.scanner.tokenize(args[0].toString(), "<snippet>")), env.sub());
 				else
 					return new FortobBoolean(false);
 			default:
@@ -55,9 +57,9 @@ public class FortobBoolean implements FortobValue, BooleanValue {
 			switch (name) {
 			case "if":
 				if (bool)
-					return FortobReadcom.READCOM.eval(FortobInterpreter.scanner.tokenize(args[0].toString(), "<snippet>"), env.sub());
+					return FortobReadcom.READCOM.eval(check(FortobInterpreter.scanner.tokenize(args[0].toString(), "<snippet>")), env.sub());
 				else
-					return FortobReadcom.READCOM.eval(FortobInterpreter.scanner.tokenize(args[1].toString(), "<snippet>"), env.sub());
+					return FortobReadcom.READCOM.eval(check(FortobInterpreter.scanner.tokenize(args[1].toString(), "<snippet>")), env.sub());
 			default:
 				break;
 			}

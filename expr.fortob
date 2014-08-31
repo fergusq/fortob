@@ -1,0 +1,42 @@
+# infix expression parser
+
+@expr[
+	$expr=[
+		$!=\;
+		$a=$!$term.apply:\\;
+		[$!.seekString="+"\.if:['='],[$!.seekString="-"\.if:['=']]].while: [
+			$a=$!.nextString="+"\.if:[
+				$a+$!$term.apply:\\
+			], [
+				$a-$!$term.apply:\\
+			]\\;
+		]\;
+		$a
+	]\;
+	$term=[
+                $!=\;
+                $b=$!$prim.apply:\\;
+                [$!.seekString="*"\.if:['='],[$!.seekString="/"\.if:['=']]].while: [
+                        $b=$!.nextString="*"\.if:[
+                                $b*$!$prim.apply:\\
+                        ], [
+                                $b/$!$prim.apply:\\
+                        ]\\;
+                ]\;
+                $b
+        ]\;
+
+	$prim=[
+		$!=\;
+		$!.seekString="("\.if: [
+			$!.accept:"("\;
+			$expr.apply:$!\
+			$!.accept:")"\;
+		], [
+			$!.nextNumber
+		]\
+	]\;
+	$\.push:$expr.apply:$!\\;
+]\;
+
+""+expr 2+(3*4)\.println;

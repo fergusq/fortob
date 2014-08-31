@@ -37,6 +37,14 @@ public interface FortobValue {
 	}
 	
 	/**
+	 * The name of the type
+	 * @return The name of the type
+	 */
+	public default String getTypename() {
+		return this.getClass().getSimpleName();
+	}
+	
+	/**
 	 * Returns a new exception for calling a nonexisting method
 	 * 
 	 * @param val The object
@@ -45,8 +53,8 @@ public interface FortobValue {
 	 * @return The exception
 	 */
 	static @NonNull RuntimeException unknownMethod(@NonNull FortobValue val, @NonNull String name, @NonNull FortobValue...args) {
-		return new RuntimeException("Unknown method `" + val.getClass().getSimpleName() + "." + name + "(" + Arrays.asList(args).stream()
-				.map(a -> a.getClass().getSimpleName()).collect(Collectors.joining(", ")) + ")'");
+		return new RuntimeException("Unknown method `" + val.getTypename() + "." + name + "(" + Arrays.asList(args).stream()
+				.map(a -> a.getTypename()).collect(Collectors.joining(", ")) + ")'");
 	}
 	
 }

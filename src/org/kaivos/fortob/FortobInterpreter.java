@@ -31,13 +31,26 @@ public class FortobInterpreter {
 	 * @param args Should contain only one element, the name of the file
 	 */
 	public static void main(String[] args) {
-		if (args.length != 1) {
-			System.err.println("usage: fortob <file>");
+		if (args.length < 1) {
+			System.err.println("usage: fortob [-d] <file>");
 			System.exit(1);
 			return;
 		}
 		
-		String file = args[0];
+		int i = 0;
+		for (; i < args.length-1; i++) {
+			switch (args[i]) {
+			case "-d":
+				FortobReadcom.DEBUG = true;
+				break;
+			default:
+				System.err.println("Unknown option `" + args[i] + "'");
+				System.exit(1);
+				return;
+			}
+		}
+		
+		String file = args[i];
 		
 		try {
 			TokenList tl = scanner.tokenize(new File(file));
