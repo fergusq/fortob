@@ -1,7 +1,5 @@
 package org.kaivos.fortob.value;
 
-import org.kaivos.fortob.annotation.NonNullByDefault;
-
 /**
  * The type of the value
  * 

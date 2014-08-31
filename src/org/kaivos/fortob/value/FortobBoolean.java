@@ -2,6 +2,7 @@ package org.kaivos.fortob.value;
 
 import org.kaivos.fortob.FortobInterpreter;
 import org.kaivos.fortob.FortobReadcom;
+import org.kaivos.fortob.annotation.NonNull;
 import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.environment.FortobEnvironment;
 
@@ -26,7 +27,7 @@ public class FortobBoolean implements FortobValue, BooleanValue {
 	}
 
 	@Override
-	public FortobValue invokeMethod(FortobEnvironment env, String name, FortobValue... args) {
+	public @NonNull FortobValue invokeMethod(@NonNull FortobEnvironment env, @NonNull String name, @NonNull FortobValue... args) {
 		
 		if (args.length == 0) {
 			switch (name) {

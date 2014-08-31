@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Stack;
 
+import org.kaivos.fortob.annotation.NonNull;
 import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.value.FortobValue;
 
@@ -17,8 +18,8 @@ import org.kaivos.fortob.value.FortobValue;
 @NonNullByDefault
 public class FortobEnvironment {
 
-	private Stack<FortobValue> stack = new Stack<>();
-	protected Map<String, FortobValue> map = new HashMap<>();
+	private Stack<@NonNull FortobValue> stack = new Stack<>();
+	protected Map<String, @NonNull FortobValue> map = new HashMap<>();
 
 	/**
 	 * Initializes an empty environment
@@ -35,7 +36,7 @@ public class FortobEnvironment {
 	/**
 	 * @return A new subenvironment
 	 */
-	public FortobEnvironment sub() {
+	public @NonNull FortobEnvironment sub() {
 		return new FortobSubenvironment(this);
 	}
 	
@@ -45,7 +46,7 @@ public class FortobEnvironment {
 	 * @param val The value
 	 * @return self
 	 */
-	public FortobEnvironment push(FortobValue val) {
+	public @NonNull FortobEnvironment push(@NonNull FortobValue val) {
 		stack.push(val);
 		return this;
 	}
@@ -55,7 +56,7 @@ public class FortobEnvironment {
 	 * 
 	 * @return The value
 	 */
-	public FortobValue peek() {
+	public @NonNull FortobValue peek() {
 		return stack.peek();
 	}
 	
@@ -64,7 +65,7 @@ public class FortobEnvironment {
 	 * 
 	 * @return The value
 	 */
-	public FortobValue pop() {
+	public @NonNull FortobValue pop() {
 		return stack.pop();
 	}
 	
@@ -73,7 +74,7 @@ public class FortobEnvironment {
 	 * 
 	 * @return self
 	 */
-	public FortobEnvironment drop() {
+	public @NonNull FortobEnvironment drop() {
 		stack.pop();
 		return this;
 	}
@@ -82,7 +83,7 @@ public class FortobEnvironment {
 	 * Duplicates the top value of the stack
 	 * @return self
 	 */
-	public FortobEnvironment dup() {
+	public @NonNull FortobEnvironment dup() {
 		stack.push(stack.peek());
 		return this;
 	}
@@ -94,7 +95,7 @@ public class FortobEnvironment {
 	 * @param val The value
 	 * @return self
 	 */
-	public FortobEnvironment put(String name, FortobValue val) {
+	public @NonNull FortobEnvironment put(String name, @NonNull FortobValue val) {
 		map.put(name, val);
 		
 		return this;
@@ -107,7 +108,7 @@ public class FortobEnvironment {
 	 * @param val The value
 	 * @return self
 	 */
-	public FortobEnvironment putLocal(String name, FortobValue val) {
+	public @NonNull FortobEnvironment putLocal(String name, @NonNull FortobValue val) {
 		map.put(name, val);
 		
 		return this;
@@ -119,7 +120,7 @@ public class FortobEnvironment {
 	 * @param name The name
 	 * @return The value
 	 */
-	public FortobValue get(String name) {
+	public @NonNull FortobValue get(String name) {
 		if (!map.containsKey(name)) {
 			throw new IndexOutOfBoundsException(name);
 		}

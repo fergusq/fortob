@@ -39,7 +39,7 @@ class FortobSubenvironment extends FortobEnvironment {
 	 * @return self
 	 */
 	@Override
-	public FortobEnvironment put(String name, FortobValue val) {
+	public FortobEnvironment put(String name, @NonNull FortobValue val) {
 		if (parent.contains(name))
 			parent.put(name, val);
 		else
@@ -55,7 +55,7 @@ class FortobSubenvironment extends FortobEnvironment {
 	 * @return The value
 	 */
 	@Override
-	public FortobValue get(String name) {
+	public @NonNull FortobValue get(String name) {
 		if (!map.containsKey(name)) {
 			return parent.get(name);
 		}

@@ -1,5 +1,6 @@
 package org.kaivos.fortob;
 
+import org.kaivos.fortob.annotation.NonNull;
 import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.environment.FortobEnvironment;
 import org.kaivos.nept.parser.TokenList;
@@ -19,6 +20,6 @@ public interface FortobCommand {
 	 * @param tl The input queue
 	 * @param env The environment
 	 */
-	public void proceed(TokenList tl, FortobEnvironment env);
+	public void proceed(@NonNull TokenList tl, @NonNull FortobEnvironment env);
 	
 }

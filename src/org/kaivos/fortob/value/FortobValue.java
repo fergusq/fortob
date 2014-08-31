@@ -3,6 +3,7 @@ package org.kaivos.fortob.value;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import org.kaivos.fortob.annotation.NonNull;
 import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.environment.FortobEnvironment;
 
@@ -23,8 +24,8 @@ public interface FortobValue {
 	 * @param args The arguments
 	 * @return The return value of the method
 	 */
-	public FortobValue invokeMethod(FortobEnvironment env, String name,
-			FortobValue... args);
+	public @NonNull FortobValue invokeMethod(@NonNull FortobEnvironment env, @NonNull String name,
+			@NonNull FortobValue... args);
 	
 	/**
 	 * The type of the value
@@ -43,7 +44,7 @@ public interface FortobValue {
 	 * @param args The arguments
 	 * @return The exception
 	 */
-	static RuntimeException unknownMethod(FortobValue val, String name, FortobValue...args) {
+	static @NonNull RuntimeException unknownMethod(@NonNull FortobValue val, @NonNull String name, @NonNull FortobValue...args) {
 		return new RuntimeException("Unknown method `" + val.getClass().getSimpleName() + "." + name + "(" + Arrays.asList(args).stream()
 				.map(a -> a.getClass().getSimpleName()).collect(Collectors.joining(", ")) + ")'");
 	}

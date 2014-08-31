@@ -33,7 +33,7 @@ public class FortobNumber implements FortobValue, NumeralValue {
 	}
 	
 	@Override
-	public FortobValue invokeMethod(FortobEnvironment env, String name, FortobValue... args) {
+	public @NonNull FortobValue invokeMethod(@NonNull FortobEnvironment env, @NonNull String name, @NonNull FortobValue... args) {
 		
 		if (args.length == 0) {
 			switch (name) {
@@ -47,8 +47,8 @@ public class FortobNumber implements FortobValue, NumeralValue {
 		
 		if (args.length == 1 && args[0] instanceof NumeralValue) {
 		
-			BigDecimal a = this.num;
-			BigDecimal b =  ((NumeralValue) args[0]).value();
+			@NonNull BigDecimal a = this.num;
+			@NonNull BigDecimal b =  ((@NonNull NumeralValue) args[0]).value();
 		
 			switch (name) {
 			case "+":
@@ -81,7 +81,7 @@ public class FortobNumber implements FortobValue, NumeralValue {
 	}
 	
 	@Override
-	public BigDecimal value() {
+	public @NonNull BigDecimal value() {
 		return num;
 	}
 	

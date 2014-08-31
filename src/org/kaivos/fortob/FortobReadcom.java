@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.kaivos.fortob.annotation.NonNull;
 import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.environment.FortobEnvironment;
 import org.kaivos.fortob.value.FortobBoolean;
@@ -37,7 +38,7 @@ public class FortobReadcom implements FortobCommand {
 	 */
 	public static final FortobReadcom READCOM = new FortobReadcom();
 	
-	private Map<String, FortobCommand> commandMap = new HashMap<>();
+	private Map<String, @NonNull FortobCommand> commandMap = new HashMap<>();
 	
 	private FortobReadcom() {
 		
@@ -89,12 +90,12 @@ public class FortobReadcom implements FortobCommand {
 			
 			if (DEBUG) System.err.println(i() + obj + "." + method + args);
 			ilevel++;
-			env.push(obj.invokeMethod(env, method, args.toArray(new FortobValue[0])));
+			env.push(obj.invokeMethod(env, check(method), args.toArray(new @NonNull FortobValue[0])));
 			ilevel--;
 			if (DEBUG) System.err.println(i() + "= " + env.peek());
 		});
 		
-		for (String operator : new String[] {"+", "-", "*", "/", "=", "<", ">"})
+		for (String operator : new @NonNull String[] {"+", "-", "*", "/", "=", "<", ">"})
 			commandMap.put(operator, (tl, env) -> env.push(env.pop().invokeMethod(env, operator, eval(tl, env))));
 		commandMap.put("(", (tl, env) -> {
 			proceed(tl, env);
@@ -125,11 +126,11 @@ public class FortobReadcom implements FortobCommand {
 		commandMap.put("p", (tl, env) -> System.out.println(env.peek()));
 	}
 	
-	private FortobValue tokenListObj(TokenList tl, FortobEnvironment env) {
+	private @NonNull FortobValue tokenListObj(@NonNull TokenList tl, @NonNull FortobEnvironment env) {
 		FortobValue val = new FortobValue() {
 			@Override
-			public FortobValue invokeMethod(FortobEnvironment env, String name,
-					FortobValue... args) {
+			public @NonNull FortobValue invokeMethod(@NonNull FortobEnvironment env, @NonNull String name,
+					@NonNull FortobValue... args) {
 				if (args.length == 0) {
 					switch (name) {
 					case "nextString":
@@ -159,11 +160,11 @@ public class FortobReadcom implements FortobCommand {
 		return val;
 	}
 	
-	private FortobValue envObj(FortobEnvironment env) {
+	private @NonNull FortobValue envObj(@NonNull FortobEnvironment env) {
 		FortobValue val = new FortobValue() {
 			@Override
-			public FortobValue invokeMethod(FortobEnvironment e, String name,
-					FortobValue... args) {
+			public @NonNull FortobValue invokeMethod(@NonNull FortobEnvironment e, @NonNull String name,
+					@NonNull FortobValue... args) {
 				if (args.length == 0) {
 					switch (name) {
 					case "pop":
@@ -202,7 +203,7 @@ public class FortobReadcom implements FortobCommand {
 	}
 	
 	@Override
-	public void proceed(TokenList tl, FortobEnvironment env) {
+	public void proceed(@NonNull TokenList tl, @NonNull FortobEnvironment env) {
 		env.putLocal("?", tokenListObj(tl, env));
 		
 		if (tl.isNext("\\")) {
@@ -219,7 +220,7 @@ public class FortobReadcom implements FortobCommand {
 		}
 	}
 	
-	private void proceedOnce(TokenList tl, FortobEnvironment env) {
+	private void proceedOnce(@NonNull TokenList tl, @NonNull FortobEnvironment env) {
 		Token next = tl.next();
 		String command = next.getToken();
 		int line = next.getLine();
@@ -243,7 +244,7 @@ public class FortobReadcom implements FortobCommand {
 	 * @param env The environment
 	 * @return the top value of the stack
 	 */
-	public FortobValue eval(TokenList tl, FortobEnvironment env) {
+	public @NonNull FortobValue eval(@NonNull TokenList tl, @NonNull FortobEnvironment env) {
 		proceed(tl, env);
 		if (DEBUG) System.err.println(i() + "= " + env.peek());
 		return env.pop();

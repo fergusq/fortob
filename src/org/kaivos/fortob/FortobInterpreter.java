@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.kaivos.fortob.annotation.NonNullByDefault;
 import org.kaivos.fortob.environment.FortobEnvironment;
+import org.kaivos.fortob.util.Checker;
 import org.kaivos.nept.parser.TokenList;
 import org.kaivos.nept.parser.TokenScanner;
 
@@ -43,7 +44,7 @@ public class FortobInterpreter {
 			
 			FortobEnvironment env = new FortobEnvironment();
 			
-			FortobReadcom.READCOM.proceed(tl, env);
+			FortobReadcom.READCOM.proceed(Checker.check(tl), env);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

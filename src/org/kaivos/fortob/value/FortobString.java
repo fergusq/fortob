@@ -26,7 +26,7 @@ public class FortobString implements FortobValue {
 	}
 	
 	@Override
-	public FortobValue invokeMethod(FortobEnvironment env, String name, FortobValue... args) {
+	public @NonNull FortobValue invokeMethod(@NonNull FortobEnvironment env, @NonNull String name, @NonNull FortobValue... args) {
 		if (args.length == 0) {
 			switch (name) {
 			case "print":

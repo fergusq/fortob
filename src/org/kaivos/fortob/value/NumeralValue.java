@@ -2,6 +2,7 @@ package org.kaivos.fortob.value;
 
 import java.math.BigDecimal;
 
+import org.kaivos.fortob.annotation.NonNull;
 import org.kaivos.fortob.annotation.NonNullByDefault;
 
 /**
@@ -18,6 +19,6 @@ public interface NumeralValue {
 	 * 
 	 * @return the value
 	 */
-	public BigDecimal value();
+	public @NonNull BigDecimal value();
 	
 }
