@@ -114,6 +114,12 @@ public class FortobReadcom implements FortobCommand {
 			env.push(env.get(name));
 		});
 		
+		commandMap.put("%", (tl, env) -> {
+			String name = tl.nextString();
+			tl.accept("=");
+			env.put(name, eval(tl, env));
+		});
+		
 		commandMap.put("@", (tl, env) -> {
 			String name = tl.nextString();
 			FortobValue val = eval(tl, env);
@@ -208,6 +214,9 @@ public class FortobReadcom implements FortobCommand {
 					switch (name) {
 					case "put":
 						env.put(args[0].toString(), args[1]);
+						return this;
+					case "putLocal":
+						env.putLocal(args[0].toString(), args[1]);
 						return this;
 					}
 				}
