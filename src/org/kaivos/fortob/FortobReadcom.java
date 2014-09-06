@@ -118,6 +118,7 @@ public class FortobReadcom implements FortobCommand {
 			String name = tl.nextString();
 			tl.accept("=");
 			env.put(name, eval(tl, env));
+			env.push(env.get(name));
 		});
 		
 		commandMap.put("@", (tl, env) -> {
