@@ -1,0 +1,17 @@
+$f=[
+	%i=\;
+	['=$i].if: [
+		"No more bottles of beer on the wall".println;
+		"no more bottles of beer".println;
+		"take one down, pass it around".println;
+		"99 bottles of beer".println;'
+	], [
+		""+$i\+_\+"bottle"\+['1=$i].if:[""],["s"]\\+_\+"of beer on the wall"\.println;
+		""+$i\+_\+"bottle"\+['1=$i].if:[""],["s"]\\+_\+" of beer"\.println;
+		"take one down, pass it around".println;
+		""+$i-'1\\+_\+"bottle"\+['1=$i-'1].if:[""],["s"]\\+_\+" of beer"\.println;
+		"".println;
+		$f.proceed:$i-'1\\;'
+	]\;'
+]\;
+$f.proceed:'9 9\;

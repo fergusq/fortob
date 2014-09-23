@@ -76,7 +76,7 @@ public class FortobReadcom implements FortobCommand {
 		
 		commandMap.put("'", (tl, env) -> env.push(new FortobNumber(0)));
 		
-		IntStream.range(0, 9).forEach(i ->
+		IntStream.range(0, 10).forEach(i ->
 			commandMap.put(""+i, (tl, env) -> env.push(env.pop().invokeMethod(env, "*", new FortobNumber(10)).invokeMethod(env, "+", new FortobNumber(i)))));
 		
 		commandMap.put(".", (tl, env) -> {
@@ -117,7 +117,7 @@ public class FortobReadcom implements FortobCommand {
 		commandMap.put("%", (tl, env) -> {
 			String name = tl.nextString();
 			tl.accept("=");
-			env.put(name, eval(tl, env));
+			env.putLocal(name, eval(tl, env));
 			env.push(env.get(name));
 		});
 		
